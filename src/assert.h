@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 #define ASSERT(expr)                                   \
     do                                                 \
     {                                                  \
