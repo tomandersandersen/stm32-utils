@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "uart.h"
 
 __attribute__((noreturn)) void _assert_failed(const char *expr,
