@@ -2,6 +2,9 @@ CC      := arm-none-eabi-gcc
 OBJCOPY := arm-none-eabi-objcopy
 SIZE    := arm-none-eabi-size
 OPENOCD := openocd
+GDB      := gdb-multiarch
+
+GDB_PORT := 3333
 
 TARGET  := firmware
 BUILD   := build
@@ -42,6 +45,10 @@ C_SOURCES :=            \
     src/start.c         \
     src/interrupts.c    \
     src/led.c           \
+    src/clock.c         \
+    src/uart.c          \
+    src/log.c           \
+    src/assert.c        \
 
 ASM_SOURCES := startup.s
 
@@ -50,7 +57,8 @@ OBJECTS := \
     $(patsubst %.c,$(BUILD)/%.o,$(C_SOURCES)) \
     $(patsubst %.s,$(BUILD)/%.o,$(ASM_SOURCES))
 
-.PHONY: all clean size flash
+.PHONY: all clean size flash debug gdb-server
+
 
 all: $(BUILD)/$(TARGET).elf $(BUILD)/$(TARGET).bin
 
@@ -76,6 +84,20 @@ flash: $(BUILD)/$(TARGET).elf
 	    -f interface/stlink.cfg \
 	    -f target/stm32f4x.cfg \
 	    -c "program $< verify reset exit"
+
+debug: $(BUILD)/$(TARGET).elf
+	$(GDB) $< \
+	    -ex "target remote :$(GDB_PORT)" \
+	    -ex "monitor reset halt" \
+	    -ex "break main"
+
+gdb-server:
+	openocd \
+	    -f interface/stlink.cfg \
+	    -f target/stm32f4x.cfg \
+	    -c "gdb_port $(GDB_PORT)" \
+	    -c "init" \
+	    -c "reset halt"
 
 size: $(BUILD)/$(TARGET).elf
 	$(SIZE) $<

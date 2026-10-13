@@ -3,6 +3,13 @@
 
 #define LED_GREEN_PIN   12U
 #define LED_ORANGE_PIN  13U
+#define LED_RED_PIN     14U
+#define LED_BLUE_PIN    15U
+
+#define LED_ALL_PINS ( (1U << LED_GREEN_PIN)  | \
+                       (1U << LED_ORANGE_PIN) | \
+                       (1U << LED_RED_PIN)    | \
+                       (1U << LED_BLUE_PIN) )
 
 static uint32_t led_pin(led_id_t led)
 {
@@ -13,6 +20,12 @@ static uint32_t led_pin(led_id_t led)
     case LED_ORANGE:
         return LED_ORANGE_PIN;
 
+    case LED_RED:
+        return LED_RED_PIN;
+
+    case LED_BLUE:
+        return LED_BLUE_PIN;
+
     default:
         return 0xFFFFFFFFU;
     }
@@ -20,28 +33,22 @@ static uint32_t led_pin(led_id_t led)
 
 void led_init(void)
 {
-    /* Enable GPIOD clock */
+    /* Enable the GPIOD peripheral clock. */
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;
     (void)RCC->AHB1ENR;
 
-    /* Configure PD12 and PD13 as outputs */
-    GPIOD->MODER &= ~((3U << (LED_GREEN_PIN * 2U)) |
-                      (3U << (LED_ORANGE_PIN * 2U)));
+    /* Configure PD12-PD15 as general-purpose outputs. */
+    GPIOD->MODER &= ~(0xFFU << 24U);
+    GPIOD->MODER |=  (0x55U << 24U);
 
-    GPIOD->MODER |=  ((1U << (LED_GREEN_PIN * 2U)) |
-                      (1U << (LED_ORANGE_PIN * 2U)));
+    /* Configure push-pull output type. */
+    GPIOD->OTYPER &= ~LED_ALL_PINS;
 
-    /* Push-pull outputs */
-    GPIOD->OTYPER &= ~((1U << LED_GREEN_PIN) |
-                       (1U << LED_ORANGE_PIN));
+    /* Disable pull-up and pull-down resistors. */
+    GPIOD->PUPDR &= ~(0xFFU << 24U);
 
-    /* No pull-up or pull-down */
-    GPIOD->PUPDR &= ~((3U << (LED_GREEN_PIN * 2U)) |
-                      (3U << (LED_ORANGE_PIN * 2U)));
-
-    /* Start with both LEDs off */
-    GPIOD->BSRR = (1U << (LED_GREEN_PIN + 16U)) |
-                  (1U << (LED_ORANGE_PIN + 16U));
+    /* Start with all LEDs off. */
+    GPIOD->BSRR = LED_ALL_PINS << 16U;
 }
 
 void led_set(led_id_t led, bool state)
@@ -53,8 +60,10 @@ void led_set(led_id_t led, bool state)
     }
 
     if (state) {
+        /* Set the output bit to turn the LED on. */
         GPIOD->BSRR = 1U << pin;
     } else {
+        /* Reset the output bit to turn the LED off. */
         GPIOD->BSRR = 1U << (pin + 16U);
     }
 }
@@ -77,5 +86,6 @@ void led_toggle(led_id_t led)
         return;
     }
 
+    /* Toggle the output state. */
     GPIOD->ODR ^= 1U << pin;
 }
