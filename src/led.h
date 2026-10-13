@@ -1,5 +1,4 @@
-#ifndef LED_H
-#define LED_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -16,5 +15,3 @@ void led_on(led_id_t led);
 void led_off(led_id_t led);
 void led_toggle(led_id_t led);
 void led_set(led_id_t led, bool state);
-
-#endif /* LED_H */

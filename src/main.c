@@ -24,6 +24,11 @@ static void delay(void)
     }
 }
 
+#define APP_BASE 0x08010000U
+
+extern void jump_to_application(uint32_t app_base)
+    __attribute__((noreturn));
+
 int main(void)
 {
     uart_init();
@@ -40,8 +45,13 @@ int main(void)
 
     LOG_INFO("Initialization complete, entering main loop");
 
+    led_on(LED_BLUE);
+
+    uint32_t counter = 0;
     while (1)
     {
+        if (counter >= 10) jump_to_application(APP_BASE);
+
         /* Green heartbeat. */
         led_toggle(LED_GREEN);
 
@@ -49,5 +59,6 @@ int main(void)
         led_toggle(LED_ORANGE);
 
         delay();
+        counter++;
     }
 }

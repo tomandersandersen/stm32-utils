@@ -50,7 +50,8 @@ C_SOURCES :=            \
     src/log.c           \
     src/assert.c        \
 
-ASM_SOURCES := startup.s
+ASM_SOURCES :=      startup.S       \
+                    src/jump.S      \
 
 
 OBJECTS := \

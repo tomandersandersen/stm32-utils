@@ -1,0 +1,235 @@
+.syntax unified
+.cpu cortex-m4
+.thumb
+
+.extern _estack
+.extern _start
+
+.extern Default_Handler
+.extern NMI_Handler
+.extern HardFault_Handler
+.extern MemManage_Handler
+.extern BusFault_Handler
+.extern UsageFault_Handler
+.extern SVC_Handler
+.extern DebugMon_Handler
+.extern PendSV_Handler
+.extern SysTick_Handler
+
+.extern WWDG_IRQHandler
+.extern PVD_IRQHandler
+.extern TAMP_STAMP_IRQHandler
+.extern RTC_WKUP_IRQHandler
+.extern FLASH_IRQHandler
+.extern RCC_IRQHandler
+.extern EXTI0_IRQHandler
+.extern EXTI1_IRQHandler
+.extern EXTI2_IRQHandler
+.extern EXTI3_IRQHandler
+.extern EXTI4_IRQHandler
+.extern DMA1_Stream0_IRQHandler
+.extern DMA1_Stream1_IRQHandler
+.extern DMA1_Stream2_IRQHandler
+.extern DMA1_Stream3_IRQHandler
+.extern DMA1_Stream4_IRQHandler
+.extern DMA1_Stream5_IRQHandler
+.extern DMA1_Stream6_IRQHandler
+.extern ADC_IRQHandler
+.extern CAN1_TX_IRQHandler
+.extern CAN1_RX0_IRQHandler
+.extern CAN1_RX1_IRQHandler
+.extern CAN1_SCE_IRQHandler
+.extern EXTI9_5_IRQHandler
+.extern TIM1_BRK_TIM9_IRQHandler
+.extern TIM1_UP_TIM10_IRQHandler
+.extern TIM1_TRG_COM_TIM11_IRQHandler
+.extern TIM1_CC_IRQHandler
+.extern TIM2_IRQHandler
+.extern TIM3_IRQHandler
+.extern TIM4_IRQHandler
+.extern I2C1_EV_IRQHandler
+.extern I2C1_ER_IRQHandler
+.extern I2C2_EV_IRQHandler
+.extern I2C2_ER_IRQHandler
+.extern SPI1_IRQHandler
+.extern SPI2_IRQHandler
+.extern USART1_IRQHandler
+.extern USART2_IRQHandler
+.extern USART3_IRQHandler
+.extern EXTI15_10_IRQHandler
+.extern RTC_Alarm_IRQHandler
+.extern OTG_FS_WKUP_IRQHandler
+.extern TIM8_BRK_TIM12_IRQHandler
+.extern TIM8_UP_TIM13_IRQHandler
+.extern TIM8_TRG_COM_TIM14_IRQHandler
+.extern TIM8_CC_IRQHandler
+.extern DMA1_Stream7_IRQHandler
+.extern FSMC_IRQHandler
+.extern SDIO_IRQHandler
+.extern TIM5_IRQHandler
+.extern SPI3_IRQHandler
+.extern UART4_IRQHandler
+.extern UART5_IRQHandler
+.extern TIM6_DAC_IRQHandler
+.extern TIM7_IRQHandler
+.extern DMA2_Stream0_IRQHandler
+.extern DMA2_Stream1_IRQHandler
+.extern DMA2_Stream2_IRQHandler
+.extern DMA2_Stream3_IRQHandler
+.extern DMA2_Stream4_IRQHandler
+.extern ETH_IRQHandler
+.extern ETH_WKUP_IRQHandler
+.extern CAN2_TX_IRQHandler
+.extern CAN2_RX0_IRQHandler
+.extern CAN2_RX1_IRQHandler
+.extern CAN2_SCE_IRQHandler
+.extern OTG_FS_IRQHandler
+.extern DMA2_Stream5_IRQHandler
+.extern DMA2_Stream6_IRQHandler
+.extern DMA2_Stream7_IRQHandler
+.extern USART6_IRQHandler
+.extern I2C3_EV_IRQHandler
+.extern I2C3_ER_IRQHandler
+.extern OTG_HS_EP1_OUT_IRQHandler
+.extern OTG_HS_EP1_IN_IRQHandler
+.extern OTG_HS_WKUP_IRQHandler
+.extern OTG_HS_IRQHandler
+.extern DCMI_IRQHandler
+.extern CRYP_IRQHandler
+.extern HASH_RNG_IRQHandler
+.extern FPU_IRQHandler
+.extern UART7_IRQHandler
+.extern UART8_IRQHandler
+.extern SPI4_IRQHandler
+.extern SPI5_IRQHandler
+.extern SPI6_IRQHandler
+.extern SAI1_IRQHandler
+.extern LTDC_IRQHandler
+.extern LTDC_ER_IRQHandler
+.extern DMA2D_IRQHandler
+
+.section .isr_vector,"a",%progbits
+.align 2
+.global isr_vector
+.type isr_vector, %object
+
+isr_vector:
+    .word _estack
+    .word Reset_Handler
+    .word NMI_Handler
+    .word HardFault_Handler
+    .word MemManage_Handler
+    .word BusFault_Handler
+    .word UsageFault_Handler
+    .word 0
+    .word 0
+    .word 0
+    .word 0
+    .word SVC_Handler
+    .word DebugMon_Handler
+    .word 0
+    .word PendSV_Handler
+    .word SysTick_Handler
+
+    /* External IRQs 0-81 */
+    .word WWDG_IRQHandler
+    .word PVD_IRQHandler
+    .word TAMP_STAMP_IRQHandler
+    .word RTC_WKUP_IRQHandler
+    .word FLASH_IRQHandler
+    .word RCC_IRQHandler
+    .word EXTI0_IRQHandler
+    .word EXTI1_IRQHandler
+    .word EXTI2_IRQHandler
+    .word EXTI3_IRQHandler
+    .word EXTI4_IRQHandler
+    .word DMA1_Stream0_IRQHandler
+    .word DMA1_Stream1_IRQHandler
+    .word DMA1_Stream2_IRQHandler
+    .word DMA1_Stream3_IRQHandler
+    .word DMA1_Stream4_IRQHandler
+    .word DMA1_Stream5_IRQHandler
+    .word DMA1_Stream6_IRQHandler
+    .word ADC_IRQHandler
+    .word CAN1_TX_IRQHandler
+    .word CAN1_RX0_IRQHandler
+    .word CAN1_RX1_IRQHandler
+    .word CAN1_SCE_IRQHandler
+    .word EXTI9_5_IRQHandler
+    .word TIM1_BRK_TIM9_IRQHandler
+    .word TIM1_UP_TIM10_IRQHandler
+    .word TIM1_TRG_COM_TIM11_IRQHandler
+    .word TIM1_CC_IRQHandler
+    .word TIM2_IRQHandler
+    .word TIM3_IRQHandler
+    .word TIM4_IRQHandler
+    .word I2C1_EV_IRQHandler
+    .word I2C1_ER_IRQHandler
+    .word I2C2_EV_IRQHandler
+    .word I2C2_ER_IRQHandler
+    .word SPI1_IRQHandler
+    .word SPI2_IRQHandler
+    .word USART1_IRQHandler
+    .word USART2_IRQHandler
+    .word USART3_IRQHandler
+    .word EXTI15_10_IRQHandler
+    .word RTC_Alarm_IRQHandler
+    .word OTG_FS_WKUP_IRQHandler
+    .word TIM8_BRK_TIM12_IRQHandler
+    .word TIM8_UP_TIM13_IRQHandler
+    .word TIM8_TRG_COM_TIM14_IRQHandler
+    .word TIM8_CC_IRQHandler
+    .word DMA1_Stream7_IRQHandler
+    .word FSMC_IRQHandler
+    .word SDIO_IRQHandler
+    .word TIM5_IRQHandler
+    .word SPI3_IRQHandler
+    .word UART4_IRQHandler
+    .word UART5_IRQHandler
+    .word TIM6_DAC_IRQHandler
+    .word TIM7_IRQHandler
+    .word DMA2_Stream0_IRQHandler
+    .word DMA2_Stream1_IRQHandler
+    .word DMA2_Stream2_IRQHandler
+    .word DMA2_Stream3_IRQHandler
+    .word DMA2_Stream4_IRQHandler
+    .word ETH_IRQHandler
+    .word ETH_WKUP_IRQHandler
+    .word CAN2_TX_IRQHandler
+    .word CAN2_RX0_IRQHandler
+    .word CAN2_RX1_IRQHandler
+    .word CAN2_SCE_IRQHandler
+    .word OTG_FS_IRQHandler
+    .word DMA2_Stream5_IRQHandler
+    .word DMA2_Stream6_IRQHandler
+    .word DMA2_Stream7_IRQHandler
+    .word USART6_IRQHandler
+    .word I2C3_EV_IRQHandler
+    .word I2C3_ER_IRQHandler
+    .word OTG_HS_EP1_OUT_IRQHandler
+    .word OTG_HS_EP1_IN_IRQHandler
+    .word OTG_HS_WKUP_IRQHandler
+    .word OTG_HS_IRQHandler
+    .word DCMI_IRQHandler
+    .word CRYP_IRQHandler
+    .word HASH_RNG_IRQHandler
+    .word FPU_IRQHandler
+    .word UART7_IRQHandler
+    .word UART8_IRQHandler
+    .word SPI4_IRQHandler
+    .word SPI5_IRQHandler
+    .word SPI6_IRQHandler
+    .word SAI1_IRQHandler
+    .word LTDC_IRQHandler
+    .word LTDC_ER_IRQHandler
+    .word DMA2D_IRQHandler
+
+.section .text.Reset_Handler,"ax",%progbits
+.thumb_func
+.global Reset_Handler
+.type Reset_Handler, %function
+
+Reset_Handler:
+    bl _start
+1:
+    b 1b
