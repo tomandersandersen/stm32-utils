@@ -5,8 +5,11 @@
 
 typedef enum {
     LED_GREEN,
-    LED_ORANGE
+    LED_ORANGE,
+    LED_RED,
+    LED_BLUE
 } led_id_t;
+
 
 void led_init(void);
 void led_on(led_id_t led);
