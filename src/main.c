@@ -2,6 +2,7 @@
 #include "clock.h"
 #include "uart.h"
 #include "log.h"
+#include "delay.h"
 
 #include <stdint.h>
 
@@ -37,6 +38,8 @@ int main(void)
         LOG_ERROR("Fail to initialize clocks");
         error_handler();
     }
+
+    delay_init();
 
     LOG_INFO("Initialization complete, entering main loop");
 

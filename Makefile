@@ -49,6 +49,7 @@ C_SOURCES :=            \
     src/uart.c          \
     src/log.c           \
     src/assert.c        \
+    src/delay.c         \
 
 ASM_SOURCES := startup.s
 

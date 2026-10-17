@@ -4,6 +4,33 @@
 
 #define CLOCK_TIMEOUT 1000000U
 
+#define HSE_HZ 8000000U
+
+static uint32_t calculate_core_clock_hz(void)
+{
+    uint32_t pllcfgr = RCC->PLLCFGR;
+    uint32_t cfgr = RCC->CFGR;
+
+    uint32_t pllm = pllcfgr & RCC_PLLCFGR_PLLM;
+    uint32_t plln = (pllcfgr & RCC_PLLCFGR_PLLN) >>
+                    RCC_PLLCFGR_PLLN_Pos;
+    uint32_t pllp = (((pllcfgr & RCC_PLLCFGR_PLLP) >>
+                      RCC_PLLCFGR_PLLP_Pos) + 1U) * 2U;
+
+    uint32_t hpre = (cfgr & RCC_CFGR_HPRE) >>
+                    RCC_CFGR_HPRE_Pos;
+
+    static const uint16_t ahb_dividers[16] = {
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 2, 4, 8, 16, 64, 128, 256
+    };
+
+    uint32_t sysclk_hz =
+        (HSE_HZ / pllm) * plln / pllp;
+
+    return sysclk_hz / ahb_dividers[hpre];
+}
+
 bool clock_init(void)
 {
     uint32_t timeout;
@@ -94,4 +121,8 @@ bool clock_init(void)
     }
 
     return true;
+}
+
+uint32_t clock_get_core_hz(void) {
+    return calculate_core_clock_hz();
 }
